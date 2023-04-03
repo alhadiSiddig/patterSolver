@@ -1,4 +1,4 @@
-<!--
+
 #	main.py
 #
 #	Non-Deterministic Processor (NDP) - efficient parallel SAT-solver
@@ -19,21 +19,18 @@
 
 #	GridSAT Stiftung - Georgstr. 11 - 30159 Hannover - Germany - info@gridsat.io
 #
--->
 
-from audioop import mul
+
 from copy import deepcopy
-import os,sys
-import time
 import argparse, textwrap
+
 from Multiply import Multiply
-from Set import *
-from Clause import *
 from PatternSolver import *
 from InputReader import InputReader
-import configs
 import traceback
 from Factorizer import Factorizer
+
+import ray
 
 # todo: 
 # - Handle if input has [x, -x]. What I did now is to normalize the clause once it get read. However, this will not enable us to 
@@ -41,6 +38,9 @@ from Factorizer import Factorizer
 #   and in the evaluation loop, we call the method normalize() before to_lo_condition(). However, do we need to normalize each set? or it's just the root set?
 #   This needs to be thought of well because we don't want to add extra time in the evaluation loop if we won't need normalization except for the root set.
 #   Currently it works fine with the current implementation as it focuses only on root, but we just don't save the unnormalized version for the root set.
+
+ray.init(address='auto', ignore_reinit_error=True)
+
 
 # a class to represent the CNF graph
 class CnfGraph:
