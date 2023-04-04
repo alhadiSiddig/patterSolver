@@ -80,6 +80,7 @@ class RemotePatternSolver:
                                 sort_by_size=False,
                                 break_on_squeue_size=0,
                                 thief_method=False):
+        print("start remote ray_process_nodes_queue")
         return (self,) + self.pattern_solver.process_nodes_queue(self.node,
                                                                  input_mode,
                                                                  dot,
@@ -535,28 +536,28 @@ class PatternSolver:
                             cnf_set = squeue.pop()
                             rps = RemotePatternSolver.remote(PatternSolver(args=PatternSolverArgs(self.args)),
                                                              name=f'Process #{i}', node=cnf_set)
-                            self.threads.append(rps.process_nodes_queue.remote(input_mode=input_mode, dot=dot,
+                            self.threads.append(rps.ray_process_nodes_queue.remote(input_mode=input_mode, dot=dot,
                                                                                sort_by_size=sort_by_size))
 
                 print()
                 print("All processes are completed!")
 
-            if is_sub_process:
-                print()
-                print(f"Process {name} data is sent to the main process")
-                print(f"Process {name} is completed!")
-                # remove the DBAdapter() while not serializable
-                squeue.unlink_db()
-                # return serializable values
-                return squeue, is_satisfiable, nodes_children, solution
-            else:
-                self.is_satisfiable = is_satisfiable
-                self.nodes_children = nodes_children
-                self.solution = solution
-                print()
-                print(f"Process {name} is completed!")
+        if is_sub_process:
+            print()
+            print(f"Process {name} data is sent to the main process")
+            print(f"Process {name} is completed!")
+            # remove the DBAdapter() while not serializable
+            squeue.unlink_db()
+            # return serializable values
+            return squeue, is_satisfiable, nodes_children, solution
+        else:
+            self.is_satisfiable = is_satisfiable
+            self.nodes_children = nodes_children
+            self.solution = solution
+            print()
+            print(f"Process {name} is completed!")
 
-        logger.info(f"\nProcess {name} is completed!")
+        #logger.info(f"\nProcess {name} is completed!")
 
     def solve_set(self, root_set):
 
