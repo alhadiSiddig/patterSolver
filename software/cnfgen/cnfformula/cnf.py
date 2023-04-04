@@ -89,7 +89,7 @@ class CNF(object):
         # Initial empty formula
         self._clauses         = []
 
-        # Variable indexes <--> Variable names correspondence
+        # Variable indexes < Variable names correspondence
         # first variable is indexed with 1.
         self._index2name      = [None]
         self._name2index      = dict()

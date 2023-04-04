@@ -1,4 +1,4 @@
-<!--
+
 #	SuperQueue.py
 #
 #	Non-Deterministic Processor (NDP) - efficient parallel SAT-solver
@@ -19,7 +19,7 @@
 
 #	GridSAT Stiftung - Georgstr. 11 - 30159 Hannover - Germany - info@gridsat.io
 #
--->
+
 
 import time
 import Set
@@ -107,3 +107,10 @@ class SuperQueue:
 
     def is_empty(self):
         return not bool(self.size())
+
+    def relink_db(self):
+        if self.use_runtime_db:
+            self.db = DbAdapter()
+
+    def unlink_db(self):
+        self.db = None

@@ -1,4 +1,4 @@
-<!--
+
 #	Set.py
 #
 #	Non-Deterministic Processor (NDP) - efficient parallel SAT-solver
@@ -19,7 +19,7 @@
 
 #	GridSAT Stiftung - Georgstr. 11 - 30159 Hannover - Germany - info@gridsat.io
 #
--->
+
 
 import hashlib
 import ast
@@ -266,7 +266,10 @@ class Set:
         self.clauses.sort(key=lambda cl: (len(cl.raw), cl.initial_index))
 
     # convert to L.O. condition
-    def to_lo_condition(self, mode=MODE_LO, sort_by_size=False, thief_method=False):
+    def to_lo_condition(self, mode=MODE_LO
+                        , sort_by_size=False
+                        , thief_method=False
+                        ):
         
         # used in Thief method, sort by length,initial index
         if thief_method:
