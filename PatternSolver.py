@@ -196,6 +196,10 @@ class PatternSolver:
             self.max_threads = CPU_COUNT * 2
         elif self.args.threads > 1:
             self.max_threads = self.args.threads
+
+        if self.max_threads > 32:
+            self.max_threads = 32
+
         self.threads = []
 
     def draw_graph(self, dot):
@@ -462,8 +466,7 @@ class PatternSolver:
                     f"Process '{name}': Progress {round((1 - len(cnf_set.clauses) / starting_len) * 100)}%, nodes so far: {self.uniques:,} uniques and {self.redundant_hits:,} redundant hits...",
                     end='\r')
 
-            # if number of running threads less than limit and less than queue size, create a new thread here and call process_nodes_queue
-            if generate_threads and (len(self.threads) < self.max_threads) and (self.max_threads == squeue.size()):
+            if generate_threads and (squeue.size() >= self.max_threads):
                 if squeue.size() > 1.5 * self.max_threads:
                     generate_threads = False
 
@@ -566,8 +569,7 @@ class PatternSolver:
         logger.info(f"Solving problem ID: {self.problem_id}")
 
         # graph drawing        
-        graph_attr = {}
-        graph_attr["splines"] = "polyline"
+        graph_attr = {"splines": "polyline"}
         dot = Digraph(comment='The CNF Tree', format='svg', graph_attr=graph_attr)
 
         logger.debug("Set #1 - to root set to {} mode".format(self.args.mode))
