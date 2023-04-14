@@ -107,6 +107,9 @@ class SuperQueue:
 
     def is_empty(self):
         return not bool(self.size())
+    #
+    # @Hamid: Adding two function relink_db and unlink_db
+    #
 
     def relink_db(self):
         if self.use_runtime_db:

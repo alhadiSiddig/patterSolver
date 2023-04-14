@@ -19,6 +19,9 @@
 #	GridSAT Stiftung - Georgstr. 11 - 30159 Hannover - Germany - info@gridsat.io
 #
 
+#
+# @Hamid: remove unused imports
+#
 
 import os
 import time
@@ -63,6 +66,9 @@ import ray
 
 TRUE_SET_HASH = Set.calculate_hash('T')
 FALSE_SET_HASH = Set.calculate_hash('F')
+#
+# @Hamid: Create RemotePatternSolver as remote pointer for ray to call process_nodes_queue
+#
 
 CPU_COUNT = 2
 
@@ -108,6 +114,10 @@ class Node:
         # if a parent node found two children with the flag set to True, it means it has a redundant node in its subgraph
         self.has_potential_redundant = False
 
+#
+# @Hamid: Create PatternSolverArgs for create and construct the
+# PatternSolver from ray.remote
+#
 
 class PatternSolverArgs:
     def __init__(self, args=None):
@@ -126,6 +136,10 @@ class PatternSolverArgs:
         self.very_verbos = args.very_verbos if args else False
         self.sort_by_size = args.sort_by_size if args else False
 
+#
+# @Hamid: refactor the constructor of PatternSolver
+# Add some new variable for using ray process
+#
 
 class PatternSolver:
     # the dictionary that holds processed set
@@ -465,6 +479,9 @@ class PatternSolver:
                 print(
                     f"Process '{name}': Progress {round((1 - len(cnf_set.clauses) / starting_len) * 100)}%, nodes so far: {self.uniques:,} uniques and {self.redundant_hits:,} redundant hits...",
                     end='\r')
+            #
+            # @Hamid: Create ray remote process instead of normal process
+            #
 
             if generate_threads and (squeue.size() >= self.max_threads):
                 if squeue.size() > 1.5 * self.max_threads:

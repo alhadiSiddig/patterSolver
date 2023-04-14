@@ -39,12 +39,28 @@ import ray
 #   This needs to be thought of well because we don't want to add extra time in the evaluation loop if we won't need normalization except for the root set.
 #   Currently it works fine with the current implementation as it focuses only on root, but we just don't save the unnormalized version for the root set.
 
+# a class to represent the CNF graph
+class CnfGraph:
+    content = None
 
+    def __init__(self, content=None):
+        self.content = content
+
+    def print_node(self):
+        print(self.content)
+
+
+#
+# @Hamid: Renaming start function from main to start
+#
 def start(args):
     # determine input type/format
     input_type = None
     input_content = None
 
+    #
+    # @Hamid: initializing ray and its connection
+    #
     ray.init(address='auto', ignore_reinit_error=True)
 
     if args.line_input:
@@ -58,6 +74,9 @@ def start(args):
     elif args.dimacs:
         input_type = INPUT_DIMACS
         input_content = args.dimacs
+    #
+    # @Hamid: Renaming java naming format to python like: CnfSet to cnf_set
+    #
 
     # begin logic
     try:
