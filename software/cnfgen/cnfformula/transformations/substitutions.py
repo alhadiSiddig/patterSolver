@@ -640,7 +640,7 @@ class FormulaLiftingCmd:
     """Lifting 
     """
     name='lift'
-    description='one dimensional lifting  x -->  x1 y1  OR ... OR xN yN, with y1+..+yN = 1'
+    description='one dimensional lifting  x   x1 y1  OR ... OR xN yN, with y1+..+yN = 1'
 
     @staticmethod
     def setup_command_line(parser):
